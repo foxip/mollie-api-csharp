@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mollie-api-csharp", "mollie-api-csharp.csproj", "{0CDEBABF-0EE3-4403-9DF5-52E9542854CE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0CDEBABF-0EE3-4403-9DF5-52E9542854CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CDEBABF-0EE3-4403-9DF5-52E9542854CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CDEBABF-0EE3-4403-9DF5-52E9542854CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CDEBABF-0EE3-4403-9DF5-52E9542854CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
