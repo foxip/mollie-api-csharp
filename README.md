@@ -7,14 +7,14 @@ Mollie API client for C#
 
 Initializing the Mollie API client, and setting your API key.
 
-```javascript
-mollieClient = new MollieClient();
+```c#
+MollieClient mollieClient = new MollieClient();
 mollieClient.setApiKey("your_api_key_here");
 ```
 
 Loading iDeal issuers
 
-```javascript
+```c#
 Issuers issuers = mollieClient.GetIssuers();
 foreach (Issuer issuer in issuers.data)
 {
@@ -24,7 +24,7 @@ foreach (Issuer issuer in issuers.data)
 
 Creating a new payment.
 
-```javascript
+```c#
 Payment payment = new Payment 
 { 
 	amount = 99.99M, 
@@ -36,12 +36,12 @@ PaymentStatus paymentStatus = mollieClient.StartPayment(payment);
 
 Getting payment status
 
-```javascript
+```c#
 PaymentStatus paymentStatus = mollieClient.GetStatus("id12345");
 ```
 
 Refunds
 
-```javascript
+```c#
 RefundStatus refundStatus = mollieClient.Refund("id12345");
 ```
