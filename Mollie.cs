@@ -129,10 +129,12 @@ namespace Mollie.Api
 
 		/// <summary>
 		/// (Optional) If you pass a valid URL as this parameter, we will use this URL as the web hook instead of the web hook that is set in the web site profile.
+        /// Valid values: nl, fr, de, en, es
 		/// </summary>
 		public string locale { get; set; }
 
 		//(Optional) Creditcard and/or paypal parameters. Countries must be specified in ISO 3166-1 alpha-2 format.
+		public string billingAddress { get; set; }
 		public string billingCity { get; set; }
 		public string billingRegion { get; set; }
 		public string billingPostal { get; set; }
