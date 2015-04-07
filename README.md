@@ -18,7 +18,7 @@ Loading iDeal issuers
 Issuers issuers = mollieClient.GetIssuers();
 foreach (Issuer issuer in issuers.data)
 {
-  Console.WriteLine(issuer.name);
+   Console.WriteLine(issuer.name);
 }
 ```
 
@@ -27,9 +27,9 @@ Creating a new payment.
 ```c#
 Payment payment = new Payment 
 { 
-	amount = 99.99M, 
-	description = "Test payment", 
-	redirectUrl = "http://www.myshop.net/completed/?orderId=1245",
+   amount = 99.99M, 
+   description = "Test payment", 
+   redirectUrl = "http://www.myshop.net/completed/?orderId=1245",
 };
 PaymentStatus paymentStatus = mollieClient.StartPayment(payment);
 ```
@@ -44,4 +44,14 @@ Refunds
 
 ```c#
 RefundStatus refundStatus = mollieClient.Refund("id12345");
+```
+
+PaymentMethods
+
+```c#
+PaymentMethods methods = mollieClient.GetPaymentMethods();
+foreach (PaymentMethod method in methods.data)
+{
+	Console.WriteLine(method.image.normal);
+}
 ```
