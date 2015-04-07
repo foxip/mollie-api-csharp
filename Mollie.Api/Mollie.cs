@@ -175,7 +175,7 @@ namespace Mollie.Api
 		public string id { get; set; }
 
 		/// <summary>
-		/// test of live, This depends on what API key you used in creating the payment
+		/// test or live, This depends on what API key you used in creating the payment
 		/// </summary>
 		public string mode { get; set; }
 
@@ -200,10 +200,15 @@ namespace Mollie.Api
 		/// </summary>
 		public DateTime? cancelledDatetime { get; set; }
 
-		/// <summary>
-		/// The exact date and time the payment expired, in ISO-8601 format.
-		/// </summary>
-		public DateTime? expiredDatetime { get; set; }
+        /// <summary>
+        /// The exact date and time the payment expired, in ISO-8601 format.
+        /// </summary>
+        public DateTime? expiredDatetime { get; set; }
+
+        /// <summary>
+        /// The time until a payment will expire in ISO 8601 duration format.
+        /// </summary>
+        public string expiryPeriod { get; set; }
 
 		/// <summary>
 		/// The amount you specified for this payment in Euro's.
@@ -297,13 +302,41 @@ namespace Mollie.Api
 		public decimal amountRemaining { get; set; }
 		public DateTime? refundedDatetime { get; set; }
 	}
+
+    public class PaymentMethods
+    {
+        public int totalCount { get; set; }
+        public int offset { get; set; }
+        public int count { get; set; }
+        public List<PaymentMethod> data { get; set; }
+    }
+
+    public class PaymentMethodAmount
+    {
+        public decimal minimum { get; set; }
+        public decimal maximum { get; set; }
+    }
+
+    public class PaymentMethodImage
+    {
+        public string normal { get; set; }
+        public string bigger { get; set; }
+    }
+
+    public class PaymentMethod
+    {
+        public string id { get; set; }
+        public string description { get; set; }
+        public PaymentMethodAmount amount { get; set; }
+        public PaymentMethodImage image { get; set; }
+    }
 	#endregion
 
 	public class MollieClient
 	{
 
 		// Version of this Mollie client.
-		const string CLIENT_VERSION = "1.0.0";
+		const string CLIENT_VERSION = "1.0.1";
 
 		// Endpoint of the remote API.
 		const string API_ENDPOINT = "https://api.mollie.nl";
@@ -376,6 +409,17 @@ namespace Mollie.Api
 			RefundStatus refundStatus = JsonConvert.DeserializeObject<RefundStatus>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 			return refundStatus;
 		}
+
+        /// <summary>
+        /// Fetch all payment methods for your profile
+        /// </summary>
+        /// <returns></returns>
+        public PaymentMethods GetPaymentMethods()
+        {
+            string jsonData = LoadWebRequest("GET", "methods", "");
+            PaymentMethods methods = JsonConvert.DeserializeObject<PaymentMethods>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            return methods;
+        }
 
 		/// <summary>
 		/// Returns the last json request data

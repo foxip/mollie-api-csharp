@@ -1,7 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mollie-api-csharp", "mollie-api-csharp.csproj", "{0CDEBABF-0EE3-4403-9DF5-52E9542854CE}"
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mollie.Tests", "Mollie.Tests\Mollie.Tests.csproj", "{5CE08B8C-9BF1-435B-908E-688A44A7BC2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mollie.Api", "Mollie.Api\Mollie.Api.csproj", "{0CDEBABF-0EE3-4403-9DF5-52E9542854CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mollie.Example", "Mollie.Example\Mollie.Example.csproj", "{95451432-F3D6-4C28-A1FD-92692240A208}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{11C5C8CC-3196-4ED2-BCF6-22ECE72CBF4D}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +22,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5CE08B8C-9BF1-435B-908E-688A44A7BC2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CE08B8C-9BF1-435B-908E-688A44A7BC2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CE08B8C-9BF1-435B-908E-688A44A7BC2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CE08B8C-9BF1-435B-908E-688A44A7BC2D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0CDEBABF-0EE3-4403-9DF5-52E9542854CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0CDEBABF-0EE3-4403-9DF5-52E9542854CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CDEBABF-0EE3-4403-9DF5-52E9542854CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CDEBABF-0EE3-4403-9DF5-52E9542854CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95451432-F3D6-4C28-A1FD-92692240A208}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95451432-F3D6-4C28-A1FD-92692240A208}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95451432-F3D6-4C28-A1FD-92692240A208}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95451432-F3D6-4C28-A1FD-92692240A208}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
