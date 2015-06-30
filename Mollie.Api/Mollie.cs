@@ -406,9 +406,7 @@ namespace Mollie.Api
 		/// <returns></returns>
 		public RefundStatus Refund(string id)
 		{
-			string jsonData = LoadWebRequest("POST", "payments" + "/" + id + "/refunds", "");
-			RefundStatus refundStatus = JsonConvert.DeserializeObject<RefundStatus>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-			return refundStatus;
+            return Refund(id, 0);
 		}
 		
         /// <summary>
@@ -420,7 +418,7 @@ namespace Mollie.Api
         /// <returns></returns>
         public RefundStatus Refund(string id, decimal amount)
         {
-            string jsonData =  LoadWebRequest("POST", "payments" + "/" + id + "/refunds", JsonConvert.SerializeObject(new { amount = amount }));
+            string jsonData = LoadWebRequest("POST", "payments" + "/" + id + "/refunds", (amount == 0) ? "" : JsonConvert.SerializeObject(new { amount = amount }));
             RefundStatus refundStatus = JsonConvert.DeserializeObject<RefundStatus>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             return refundStatus;
         }
