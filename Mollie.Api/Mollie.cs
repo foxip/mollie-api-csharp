@@ -410,6 +410,20 @@ namespace Mollie.Api
 			RefundStatus refundStatus = JsonConvert.DeserializeObject<RefundStatus>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
 			return refundStatus;
 		}
+		
+        /// <summary>
+        /// To refund a payment, you must have sufficient balance with Mollie for deducting the refund and its fees. You can find your current balance on the on the Mollie controlpanel.
+        /// At the moment you can only process refunds for iDEAL, Bancontact/Mister Cash, SOFORT Banking, creditcard and bank transfer payments.
+        /// </summary>
+        /// <param name="id">The id of the payment</param>
+        /// <param name="amount">The amount to refund</param>
+        /// <returns></returns>
+        public RefundStatus Refund(string id, decimal amount)
+        {
+            string jsonData =  LoadWebRequest("POST", "payments" + "/" + id + "/refunds", JsonConvert.SerializeObject(new { amount = amount }));
+            RefundStatus refundStatus = JsonConvert.DeserializeObject<RefundStatus>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            return refundStatus;
+        }
 
         /// <summary>
         /// Fetch all payment methods for your profile
