@@ -47,6 +47,7 @@ namespace Mollie.Api
 		mistercash,
 		sofort,
 		banktransfer,
+		directdebit,
 		belfius,
 		bitcoin,
 		paypal,
