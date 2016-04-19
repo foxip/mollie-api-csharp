@@ -92,6 +92,16 @@ namespace Mollie.Api
 		/// The payment has expired, for example, your customer has closed the payment screen.
 		/// </summary>
 		expired,
+		
+		/// <summary>
+	        /// The payment has failed and can not be finished with another payment method.
+	        /// </summary>
+	        failed,
+	
+	        /// <summary>
+	        /// The payment has been charged back after a complaint in case of creditcard, directdebit and paypal.
+	        /// </summary>
+	        charged_back,
 	}
 	#endregion
 
