@@ -49,6 +49,7 @@ namespace Mollie.Api
 		banktransfer,
 		directdebit,
 		belfius,
+		kbc,
 		bitcoin,
 		paypal,
 		paysafecard,
