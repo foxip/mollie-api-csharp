@@ -82,7 +82,7 @@ namespace Mollie.Api
         /// <returns></returns>
         public PaymentStatus StartPayment(Payment payment)
         {
-            string jsonData = LoadWebRequest("POST", "payments", JsonConvert.SerializeObject(payment));
+            string jsonData = LoadWebRequest("POST", "payments", JsonConvert.SerializeObject(payment, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
             PaymentStatus status = JsonConvert.DeserializeObject<PaymentStatus>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore}); 
             return status;
         }

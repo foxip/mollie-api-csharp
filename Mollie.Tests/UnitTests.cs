@@ -26,7 +26,8 @@ namespace Mollie.Tests
                 amount = 99.99M,
                 description = "Test payment",
                 redirectUrl = "http://www.foxip.net/test/12345",
-                metadata = "12345678"            };
+                metadata = "12345678"            
+            };
 
             PaymentStatus status = mollieClient.StartPayment(payment);
 
