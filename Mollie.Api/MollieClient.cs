@@ -135,6 +135,20 @@ namespace Mollie.Api
             return methods;
         }
 
+        public GetCustomer CreateCustomer(CreateCustomer customer)
+        {
+            string jsonData = LoadWebRequest("POST", "customers", JsonConvert.SerializeObject(customer, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
+            GetCustomer getCustomer = JsonConvert.DeserializeObject<GetCustomer>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            return getCustomer;
+        }
+
+        public GetCustomer GetCustomer(string id)
+        {
+            string jsonData = LoadWebRequest("GET", "customers/" + id, "");
+            GetCustomer getCustomer = JsonConvert.DeserializeObject<GetCustomer>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            return getCustomer;
+        }
+
         /// <summary>
         /// Returns the last json request data
         /// </summary>

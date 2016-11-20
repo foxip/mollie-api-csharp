@@ -106,7 +106,53 @@ namespace Mollie.Tests
 
              PaymentStatus status = mollieClient.StartPayment(payment);
              Assert.AreEqual(status.method, Method.ideal);
-         }        
+         }
 
+        [TestMethod]
+        public void CanGetCreateCustomer()
+        {
+            CreateCustomer newCustomer = new CreateCustomer
+            {
+                email = "president@whitehouse.gov",
+                name = "President",
+                locale = "en_US",
+                metadata = "something"
+            };
+            GetCustomer createdCustomer = mollieClient.CreateCustomer(newCustomer);
+
+            Assert.AreEqual(newCustomer.name, createdCustomer.name);
+            Assert.AreEqual(newCustomer.email, createdCustomer.email);
+            Assert.AreEqual(newCustomer.metadata, createdCustomer.metadata);
+            Assert.AreEqual(newCustomer.locale, createdCustomer.locale);
+            Assert.AreEqual("test", createdCustomer.mode);
+            Assert.AreEqual("customer", createdCustomer.resource);
+
+            Assert.IsTrue(createdCustomer.id.Length > 1);
+
+            GetCustomer getCustomer = mollieClient.GetCustomer(createdCustomer.id);
+
+            Assert.AreEqual(getCustomer.name, createdCustomer.name);
+            Assert.AreEqual(getCustomer.name, createdCustomer.name);
+            Assert.AreEqual(getCustomer.email, createdCustomer.email);
+            Assert.AreEqual(getCustomer.metadata, createdCustomer.metadata);
+            Assert.AreEqual(getCustomer.locale, createdCustomer.locale);
+            Assert.AreEqual("test", getCustomer.mode);
+            Assert.AreEqual("customer", getCustomer.resource);
+        }
+
+        [TestMethod]
+        public void CanNotGetNonExistingCustomer()
+        {
+            try
+            {
+                GetCustomer getCustomer = mollieClient.GetCustomer("non-existing-customer");
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("The customer id is invalid"));
+                return;
+            }
+            Assert.Fail("Did not throw exception");
+        }
     }
 }

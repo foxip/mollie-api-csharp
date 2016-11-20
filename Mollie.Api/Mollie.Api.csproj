@@ -52,6 +52,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\GetCustomer.cs" />
+    <Compile Include="Models\CreateCustomer.cs" />
     <Compile Include="Models\Issuers.cs" />
     <Compile Include="Models\Links.cs" />
     <Compile Include="Models\Method.cs" />
