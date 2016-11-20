@@ -52,8 +52,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mollie.cs" />
+    <Compile Include="Models\Issuers.cs" />
+    <Compile Include="Models\Links.cs" />
+    <Compile Include="Models\Method.cs" />
+    <Compile Include="Models\Issuer.cs" />
+    <Compile Include="MollieClient.cs" />
+    <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\PaymentDetails.cs" />
+    <Compile Include="Models\PaymentMethod.cs" />
+    <Compile Include="Models\PaymentMethodAmount.cs" />
+    <Compile Include="Models\PaymentMethodImage.cs" />
+    <Compile Include="Models\PaymentMethods.cs" />
+    <Compile Include="Models\PaymentStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\RecurringType.cs" />
+    <Compile Include="Models\RefundStatus.cs" />
+    <Compile Include="Models\Status.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

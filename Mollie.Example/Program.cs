@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Mollie.Api;
 using System.Configuration;
+using Mollie.Api.Models;
 
 namespace Mollie.Example
 {

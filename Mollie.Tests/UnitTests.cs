@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Mollie.Api;
 using System.Configuration;
+using Mollie.Api.Models;
 
 namespace Mollie.Tests
 {
