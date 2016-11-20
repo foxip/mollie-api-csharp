@@ -78,7 +78,7 @@ namespace Mollie.Api.Models
         /// (Optional) Enables recurring payments. If set to first, a first payment for the customer is created, allowing the customer to agree to automatic recurring charges taking place on their account in the future. If set to recurring, the customer's card is charged automatically. 
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
-        public RecurringType recurringType { get; set; }
+        public RecurringType? recurringType { get; set; }
 
         /// <summary>
         /// (Optional) The ID of the customer for whom the payment is being created. 
