@@ -32,12 +32,12 @@ namespace Mollie.Api.Models
         public string metadata { get; set; }
 
         /// <summary>
-        /// (Required) The URL that you want us to send your buyer to after he completes the payment. It's important to include some kind of unique identifier to this URL - like an order ID - so that you can directly show the right screen to your buyer.
+        /// (Optional) If you pass a valid URL as this parameter, we will use this URL as the web hook instead of the web hook that is set in the web site profile.
         /// </summary>
         public string webhookUrl { get; set; }
 
         /// <summary>
-        /// (Optional) If you pass a valid URL as this parameter, we will use this URL as the web hook instead of the web hook that is set in the web site profile.
+        /// Allow you to preset the language to be used in the payment screens shown to the consumer. When this parameter is not provided, the browser language will be used instead (which is usually more accurate).
         /// Valid values: nl, fr, de, en, es
         /// </summary>
         public string locale { get; set; }
