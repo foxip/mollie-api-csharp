@@ -183,6 +183,7 @@ namespace Mollie.Api
             request.Accept = "application/json";
             request.Headers.Add("Authorization", "Bearer " + _api_key);
             request.UserAgent = "Foxip Mollie Client v" + CLIENT_VERSION;
+            request.Timeout = 10*1000; // 10 x 1000ms = 10s
 
             if (postData != "")
             {
