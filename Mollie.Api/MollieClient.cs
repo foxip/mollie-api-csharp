@@ -196,13 +196,11 @@ namespace Mollie.Api
                 }
             }
 
-            string strResponse = "";
-
             try
             {
                 using (StreamReader streamIn = new StreamReader(request.GetResponse().GetResponseStream()))
                 {
-                    strResponse = streamIn.ReadToEnd();
+                    _last_response = streamIn.ReadToEnd();
                     streamIn.Close();
                 }
             }
@@ -210,23 +208,24 @@ namespace Mollie.Api
             {
                 if (ex is WebException && ((WebException)ex).Status == WebExceptionStatus.ProtocolError)
                 {
-                    WebResponse errResp = ((WebException)ex).Response;
-                    using (Stream respStream = errResp.GetResponseStream())
+                    using (WebResponse errResp = ((WebException) ex).Response)
                     {
-                        using (StreamReader r = new StreamReader(respStream))
+                        using (Stream respStream = errResp.GetResponseStream())
                         {
-                            strResponse = r.ReadToEnd();
-                            r.Close();
+                            using (StreamReader r = new StreamReader(respStream))
+                            {
+                                _last_response = r.ReadToEnd();
+                                r.Close();
+                            }
+                            respStream.Close();
                         }
-                        respStream.Close();
-                        throw new Exception(strResponse);
+                        errResp.Close();
                     }
+                    throw new Exception(_last_response);
                 }
             }
 
-            _last_response = strResponse;
-
-            return strResponse;
+            return _last_response;
         }
     }
 }
