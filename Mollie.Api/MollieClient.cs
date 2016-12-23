@@ -168,6 +168,7 @@ namespace Mollie.Api
         private string LoadWebRequest(string httpMethod, string resource, string postData)
         {
             _last_request = postData;
+            _last_response = "{}";
 
             string url = API_ENDPOINT + "/" + API_VERSION + "/" + resource;
 
@@ -189,19 +190,34 @@ namespace Mollie.Api
             {
                 //Send the request and get the response
                 request.ContentType = "application/json";
-                using (StreamWriter streamOut = new StreamWriter(request.GetRequestStream(), System.Text.Encoding.ASCII))
+                using (Stream stream = request.GetRequestStream())
                 {
-                    streamOut.Write(postData);
-                    streamOut.Close();
+                    using (StreamWriter streamOut = new StreamWriter(stream, System.Text.Encoding.ASCII))
+                    {
+                        streamOut.Write(postData);
+                        streamOut.Close();
+                    }
+                    stream.Close();
                 }
             }
 
             try
             {
-                using (StreamReader streamIn = new StreamReader(request.GetResponse().GetResponseStream()))
+                using (WebResponse response = request.GetResponse())
                 {
-                    _last_response = streamIn.ReadToEnd();
-                    streamIn.Close();
+                    using (Stream stream = response.GetResponseStream())
+                    {
+                        if (stream != null)
+                        {
+                            using (StreamReader streamIn = new StreamReader(stream))
+                            {
+                                _last_response = streamIn.ReadToEnd();
+                                streamIn.Close();
+                            }
+                            stream.Close();
+                        }
+                    }
+                    response.Close();
                 }
             }
             catch (Exception ex)
@@ -212,16 +228,23 @@ namespace Mollie.Api
                     {
                         using (Stream respStream = errResp.GetResponseStream())
                         {
-                            using (StreamReader r = new StreamReader(respStream))
+                            if (respStream != null)
                             {
-                                _last_response = r.ReadToEnd();
-                                r.Close();
+                                using (StreamReader r = new StreamReader(respStream))
+                                {
+                                    _last_response = r.ReadToEnd();
+                                    r.Close();
+                                }
+                                respStream.Close();
                             }
-                            respStream.Close();
                         }
                         errResp.Close();
                     }
                     throw new Exception(_last_response);
+                }
+                else
+                {
+                    throw;
                 }
             }
 
