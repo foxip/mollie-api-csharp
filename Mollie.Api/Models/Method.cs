@@ -16,5 +16,6 @@ namespace Mollie.Api.Models
         bitcoin,
         paypal,
         paysafecard,
+        giftcard,
     }
 }
