@@ -46,41 +46,53 @@ namespace Mollie.Api
         // Version of the remote API.
         const string API_VERSION = "v1";
 
-        private string _api_key;
+        private readonly string _apiKey;
 
-        private string _last_request;
-        private string _last_response;
-		
-        /// <param name="api_key">The Mollie API key, starting with 'test_' or 'live_'</param>
-        public void setApiKey(string api_key)
+        private string _lastRequest;
+        private string _lastResponse;
+
+        /// <param name="apiKey">The Mollie API key, starting with 'test_' or 'live_'</param>
+        public MollieClient(string apiKey)
         {
-            api_key = api_key.Trim();
-
-            if (!Regex.IsMatch(api_key, "^(live|test)_\\w+$"))
+            if ((apiKey == null) || (!Regex.IsMatch(apiKey.Trim(), "^(live|test)_\\w+$")))
             {
-                throw new Exception(String.Format("Invalid API key: '{0}'. An API key must start with 'test_' or 'live_'.", api_key));
+                throw new Exception(String.Format("Invalid API key: '{0}'. An API key must start with 'test_' or 'live_'.", apiKey));
             }
+            _apiKey = apiKey.Trim();
+        }
 
-            _api_key = api_key;
-        }		
+        #region Issuers API
+        /// <summary>
+        /// Retrieve an issuer object by specifying an issuer identifier.
+        /// </summary>
+        /// <returns></returns>
+        public Issuer GetIssuer(string id)
+        {
+            string jsonData = LoadWebRequest("GET", "issuers/" + id, "");
+            Issuer issuer = JsonConvert.DeserializeObject<Issuer>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            return issuer;
+        }
 
         /// <summary>
         /// To integrate the iDeal issuer selection step on your own web site.
         /// </summary>
         /// <returns></returns>
-        public Issuers GetIssuers()
+        public Issuers ListIssuers()
         {
             string jsonData = LoadWebRequest("GET", "issuers", "");
             Issuers issuers = JsonConvert.DeserializeObject<Issuers>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             return issuers;
         }
+        #endregion
+
+        #region Payments API
 
         /// <summary>
-        /// Start a payment
+        /// Create a payment
         /// </summary>
         /// <param name="payment">Payment object</param>
         /// <returns></returns>
-        public PaymentStatus StartPayment(Payment payment)
+        public PaymentStatus CreatePayment(Payment payment)
         {
             string jsonData = LoadWebRequest("POST", "payments", JsonConvert.SerializeObject(payment, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
             PaymentStatus status = JsonConvert.DeserializeObject<PaymentStatus>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore}); 
@@ -92,7 +104,7 @@ namespace Mollie.Api
         /// </summary>
         /// <param name="id">The id of the payment</param>
         /// <returns></returns>
-        public PaymentStatus GetStatus(string id)
+        public PaymentStatus GetPayment(string id)
         {
             string jsonData = LoadWebRequest("GET", "payments" + "/" + id, "");
             PaymentStatus status = JsonConvert.DeserializeObject<PaymentStatus>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
@@ -100,30 +112,46 @@ namespace Mollie.Api
         }
 
         /// <summary>
-        /// To refund a payment, you must have sufficient balance with Mollie for deducting the refund and its fees. You can find your current balance on the on the Mollie controlpanel.
-        /// At the moment you can only process refunds for iDEAL, Bancontact/Mister Cash, SOFORT Banking, creditcard and bank transfer payments.
+        /// Get list of a payments
         /// </summary>
-        /// <param name="id">The id of the payment</param>
         /// <returns></returns>
-        public RefundStatus Refund(string id)
+        public Payments GetPayments()
         {
-            return Refund(id, 0);
+            string jsonData = LoadWebRequest("GET", "payments", "");
+            Payments payments = JsonConvert.DeserializeObject<Payments>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            return payments;
         }
-		
+
         /// <summary>
         /// To refund a payment, you must have sufficient balance with Mollie for deducting the refund and its fees. You can find your current balance on the on the Mollie controlpanel.
         /// At the moment you can only process refunds for iDEAL, Bancontact/Mister Cash, SOFORT Banking, creditcard and bank transfer payments.
         /// </summary>
         /// <param name="id">The id of the payment</param>
-        /// <param name="amount">The amount to refund</param>
+        /// <param name="amount">Optional - The amount to refund</param>
+        /// <param name="description">Optional – The description of the refund you are creating. This will be shown to the consumer on their card or bank statement when possible. Max 140 characters.</param>
         /// <returns></returns>
-        public RefundStatus Refund(string id, decimal amount)
+        public RefundStatus CreateRefund(string id, decimal amount = 0, string description = "")
         {
-            string jsonData = LoadWebRequest("POST", "payments" + "/" + id + "/refunds", (amount == 0) ? "" : JsonConvert.SerializeObject(new { amount = amount }));
+            string jsonData = LoadWebRequest("POST", "payments" + "/" + id + "/refunds", (amount == 0) ? "" : JsonConvert.SerializeObject(new { amount, description }));
             RefundStatus refundStatus = JsonConvert.DeserializeObject<RefundStatus>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             return refundStatus;
         }
 
+        /// <summary>
+        /// Retrieve all refunds for the given payment.
+        /// </summary>
+        /// <param name="id">The id of the payment</param>
+        /// <returns></returns>
+        public Refunds ListRefunds(string id)
+        {
+            string jsonData = LoadWebRequest("POST", "payments" + "/" + id + "/refunds", "");
+            Refunds refunds = JsonConvert.DeserializeObject<Refunds>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            return refunds;
+        }
+
+        #endregion
+
+        #region Methods API
         /// <summary>
         /// Fetch all payment methods for your profile
         /// </summary>
@@ -134,7 +162,9 @@ namespace Mollie.Api
             PaymentMethods methods = JsonConvert.DeserializeObject<PaymentMethods>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             return methods;
         }
+        #endregion
 
+        #region Customers API
         public GetCustomer CreateCustomer(CreateCustomer customer)
         {
             string jsonData = LoadWebRequest("POST", "customers", JsonConvert.SerializeObject(customer, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
@@ -148,13 +178,29 @@ namespace Mollie.Api
             GetCustomer getCustomer = JsonConvert.DeserializeObject<GetCustomer>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             return getCustomer;
         }
+        public Customers ListCustomers()
+        {
+            string jsonData = LoadWebRequest("GET", "customers", "");
+            Customers customers = JsonConvert.DeserializeObject<Customers>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            return customers;
+        }
+        #endregion
+
+        #region Mandates API
+        public Mandates ListMandates(string customerId)
+        {
+            string jsonData = LoadWebRequest("GET", "customers/" + customerId + "/mandates", "");
+            Mandates mandates = JsonConvert.DeserializeObject<Mandates>(jsonData, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
+            return mandates;
+        }
+        #endregion
 
         /// <summary>
         /// Returns the last json request data
         /// </summary>
         public string LastRequest
         {
-            get { return _last_request; }
+            get { return _lastRequest; }
         }
 
         /// <summary>
@@ -162,13 +208,13 @@ namespace Mollie.Api
         /// </summary>
         public string LastResponse
         {
-            get { return _last_response; }
+            get { return _lastResponse; }
         }
 
         private string LoadWebRequest(string httpMethod, string resource, string postData)
         {
-            _last_request = postData;
-            _last_response = "{}";
+            _lastRequest = postData;
+            _lastResponse = "{}";
 
             string url = API_ENDPOINT + "/" + API_VERSION + "/" + resource;
 
@@ -182,7 +228,7 @@ namespace Mollie.Api
 
             request.Method = httpMethod;
             request.Accept = "application/json";
-            request.Headers.Add("Authorization", "Bearer " + _api_key);
+            request.Headers.Add("Authorization", "Bearer " + _apiKey);
             request.UserAgent = "Foxip Mollie Client v" + CLIENT_VERSION;
             request.Timeout = 10*1000; // 10 x 1000ms = 10s
 
@@ -211,7 +257,7 @@ namespace Mollie.Api
                         {
                             using (StreamReader streamIn = new StreamReader(stream))
                             {
-                                _last_response = streamIn.ReadToEnd();
+                                _lastResponse = streamIn.ReadToEnd();
                                 streamIn.Close();
                             }
                             stream.Close();
@@ -232,7 +278,7 @@ namespace Mollie.Api
                             {
                                 using (StreamReader r = new StreamReader(respStream))
                                 {
-                                    _last_response = r.ReadToEnd();
+                                    _lastResponse = r.ReadToEnd();
                                     r.Close();
                                 }
                                 respStream.Close();
@@ -240,7 +286,7 @@ namespace Mollie.Api
                         }
                         errResp.Close();
                     }
-                    throw new Exception(_last_response);
+                    throw new Exception(_lastResponse);
                 }
                 else
                 {
@@ -248,7 +294,7 @@ namespace Mollie.Api
                 }
             }
 
-            return _last_response;
+            return _lastResponse;
         }
     }
 }

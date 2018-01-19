@@ -1,24 +1,23 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using Mollie.Api;
 using System.Configuration;
 using Mollie.Api.Models;
 
 namespace Mollie.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class UnitTests
     {
         private static MollieClient mollieClient;
 
-        [ClassInitialize]
-        public static void InitClass(TestContext conext)
+        [OneTimeSetUp]
+        public static void Setup()
         {
-            mollieClient = new MollieClient();
-            mollieClient.setApiKey(ConfigurationManager.AppSettings["mollie_api_key"]);            
+            mollieClient = new MollieClient(ConfigurationManager.AppSettings["mollie_api_key"]);
         }
 
-        [TestMethod]
+        [Test]
         public void CanMakePayment()
         {
             Payment payment = new Payment
@@ -29,7 +28,7 @@ namespace Mollie.Tests
                 metadata = "12345678"            
             };
 
-            PaymentStatus status = mollieClient.StartPayment(payment);
+            PaymentStatus status = mollieClient.CreatePayment(payment);
 
             Assert.AreEqual(status.amount, payment.amount);
             Assert.AreEqual(status.description, payment.description);
@@ -47,7 +46,7 @@ namespace Mollie.Tests
             Assert.IsNull(status.method);
         }
 
-        [TestMethod]
+        [Test]
         public void CanGetPaymentMethodDetails()
         {
             PaymentMethods methods = mollieClient.GetPaymentMethods();
@@ -63,37 +62,40 @@ namespace Mollie.Tests
             }
         }
 
-        [TestMethod]
-        public void IDEAL_CanGetIssuers()
+        [Test]
+        public void CanGetIssuers()
         {
-            Issuers issuers = mollieClient.GetIssuers();
+            Issuers issuers = mollieClient.ListIssuers();
             Assert.IsTrue(issuers.count > 0, "Found 0 issuers");
             foreach (Issuer issuer in issuers.data)
             {
                 Assert.IsTrue(issuer.name != "");
                 Assert.IsTrue(issuer.id != "");
                 Assert.IsTrue(issuer.method != "");
+                var issuerDetails = mollieClient.GetIssuer(issuer.id);
+                Assert.AreEqual(issuerDetails.id, issuer.id);
             }
         }
-        
-        [TestMethod]
-        public void IDEAL_CanMakePayment()
+
+        [TestCase(Method.ideal)]
+        [TestCase(Method.bitcoin)]
+        public void CanMakePayment(Method method)
         {
             Payment payment = new Payment
             {                
                 amount = 99.99M,
                 description = "Test payment",
                 redirectUrl = "http://www.foxip.net/test/12345",
-                method = Method.ideal
+                method = method
             };
-            PaymentStatus status = mollieClient.StartPayment(payment);
-            Assert.AreEqual(status.method, Method.ideal);
+            PaymentStatus status = mollieClient.CreatePayment(payment);
+            Assert.AreEqual(status.method, method);
         }
 
-         [TestMethod]
-         public void IDEAL_CanMakePaymentWithIssuer()
+         [Test]
+         public void CanMakePaymentWithIssuer()
          {
-             Issuers issuers = mollieClient.GetIssuers();
+             Issuers issuers = mollieClient.ListIssuers();
 
              Payment payment = new Payment
              {
@@ -104,11 +106,11 @@ namespace Mollie.Tests
                  issuer = issuers.data[0].id
              };
 
-             PaymentStatus status = mollieClient.StartPayment(payment);
+             PaymentStatus status = mollieClient.CreatePayment(payment);
              Assert.AreEqual(status.method, Method.ideal);
          }
 
-        [TestMethod]
+        [Test]
         public void CanGetCreateCustomer()
         {
             CreateCustomer newCustomer = new CreateCustomer
@@ -138,9 +140,12 @@ namespace Mollie.Tests
             Assert.AreEqual(getCustomer.locale, createdCustomer.locale);
             Assert.AreEqual("test", getCustomer.mode);
             Assert.AreEqual("customer", getCustomer.resource);
+
+            Customers customers = mollieClient.ListCustomers();
+            Assert.IsTrue(customers.data.Count>0);
         }
 
-        [TestMethod]
+        [Test]
         public void CanNotGetNonExistingCustomer()
         {
             try
@@ -154,5 +159,25 @@ namespace Mollie.Tests
             }
             Assert.Fail("Did not throw exception");
         }
+
+        [Test]
+        public void CanGetPayments()
+        {
+            Payments payments = mollieClient.GetPayments();
+            int count = payments.totalCount;
+
+            PaymentStatus status = mollieClient.CreatePayment(new Payment
+            {
+                amount = 99.99M,
+                description = "Test payment",
+                redirectUrl = "http://www.foxip.net/test/12345"
+            });
+
+            payments = mollieClient.GetPayments();
+
+            Assert.AreEqual(count + 1, payments.totalCount);
+
+        }
+       
     }
 }

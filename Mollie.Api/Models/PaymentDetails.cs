@@ -1,4 +1,6 @@
-﻿namespace Mollie.Api.Models
+﻿using System;
+
+namespace Mollie.Api.Models
 {
     public class PaymentDetails
     {
@@ -14,6 +16,7 @@
         public string cardLabel { get; set; }
         public string cardCountry  { get; set; }
         public string cardCountryCode  { get; set; }
+        public DateTime? cardExpiryDate { get; set; }
         public string feeRegion { get; set; }
 
         public string bankName { get; set; }

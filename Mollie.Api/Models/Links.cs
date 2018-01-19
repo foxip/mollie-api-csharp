@@ -7,5 +7,6 @@ namespace Mollie.Api.Models
         public string webhookUrl  { get; set; }
         public string settlement  { get; set; }
         public string refunds { get; set; }
+        public string chargebacks { get; set; }
     }
 }

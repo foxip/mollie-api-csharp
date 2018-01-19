@@ -13,11 +13,10 @@ namespace Mollie.Example
     {
         static void Main(string[] args)
         {
-            MollieClient mollieClient = new MollieClient();
-            mollieClient.setApiKey(ConfigurationManager.AppSettings["mollie_api_key"]);
+            MollieClient mollieClient = new MollieClient(ConfigurationManager.AppSettings["mollie_api_key"]);
 
             Console.WriteLine("Loading iDeal issuers ...");
-            Issuers issuers = mollieClient.GetIssuers();
+            Issuers issuers = mollieClient.ListIssuers();
             foreach (Issuer issuer in issuers.data)
             {
                 Console.WriteLine(issuer.name);
@@ -32,7 +31,7 @@ namespace Mollie.Example
                 redirectUrl = "http://www.foxip.net/completed/?orderId=1245",
             };
 
-            PaymentStatus status = mollieClient.StartPayment(payment);
+            PaymentStatus status = mollieClient.CreatePayment(payment);
 
             Console.WriteLine("The status is: " + status.status);
             Console.WriteLine("Please follow this link to start the payment:");
@@ -42,14 +41,14 @@ namespace Mollie.Example
             Console.ReadLine();
 
             Console.WriteLine("Getting status ...");
-            status = mollieClient.GetStatus(status.id);
+            status = mollieClient.GetPayment(status.id);
             Console.WriteLine("The status is now: " + status.status);
 
             //Refunds only for iDEAL, Bancontact/Mister Cash, SOFORT Banking, creditcard and banktransfer 
             Console.WriteLine("Refunding ...");
             try
             {
-                RefundStatus refundStatus = mollieClient.Refund(status.id);
+                RefundStatus refundStatus = mollieClient.CreateRefund(status.id);
                 Console.WriteLine("The status is now: " + refundStatus.payment.status);
             }
             catch (Exception ex)
@@ -58,7 +57,7 @@ namespace Mollie.Example
             }
 
             Console.WriteLine("Starting payment with a specific method ...");
-            status = mollieClient.StartPayment(new Payment
+            status = mollieClient.CreatePayment(new Payment
             {
                 amount = 1.99M,
                 method = Method.mistercash,

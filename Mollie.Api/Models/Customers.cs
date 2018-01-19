@@ -3,10 +3,10 @@ using System.Collections.Generic;
 namespace Mollie.Api.Models
 {
     /// <summary>
-    /// Ideal issuer set
+    /// Customers
     /// </summary>
-    public class Issuers : BaseList
+    public class Customers : BaseList
     {
-        public List<Issuer> data { get; set; }
+        public List<GetCustomer> data { get; set; }
     }
 }

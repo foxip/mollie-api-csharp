@@ -54,10 +54,18 @@
   <ItemGroup>
     <Compile Include="Models\GetCustomer.cs" />
     <Compile Include="Models\CreateCustomer.cs" />
+    <Compile Include="Models\Mandate.cs" />
+    <Compile Include="Models\Mandates.cs" />
+    <Compile Include="Models\MandateStatus.cs" />
+    <Compile Include="Models\Customers.cs" />
+    <Compile Include="Models\Refunds.cs" />
     <Compile Include="Models\Issuers.cs" />
+    <Compile Include="Models\BaseList.cs" />
+    <Compile Include="Models\PagingLinks.cs" />
     <Compile Include="Models\Links.cs" />
     <Compile Include="Models\Method.cs" />
     <Compile Include="Models\Issuer.cs" />
+    <Compile Include="Models\Payments.cs" />
     <Compile Include="MollieClient.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\PaymentDetails.cs" />

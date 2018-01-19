@@ -6,8 +6,7 @@ namespace Mollie.Api.Models
     {
         public string id { get; set; }
         public PaymentStatus payment { get; set; }
-        public decimal amountRefunded { get; set; }
-        public decimal amountRemaining { get; set; }
+        public decimal amount { get; set; }
         public DateTime? refundedDatetime { get; set; }
     }
 }

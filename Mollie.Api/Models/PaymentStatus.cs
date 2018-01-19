@@ -28,6 +28,11 @@ namespace Mollie.Api.Models
         public Status? status { get; set; }
 
         /// <summary>
+        /// Whether or not the payment can be cancelled. 
+        /// </summary>
+        public bool? canBeCancelled { get; set; }
+
+        /// <summary>
         /// The exact date and time the payment was marked as paid, in ISO-8601 format.
         /// </summary>
         public DateTime? paidDatetime { get; set; }
@@ -52,8 +57,14 @@ namespace Mollie.Api.Models
         /// </summary>
         public decimal amount { get; set; }
 
+        /// <summary>
+        /// Only available when refunds are available for this payment – The total amount in EURO that is already refunded. For some payment methods, this amount may be higher than the payment amount, for example to allow reimbursement of the costs for a return shipment to the customer. 
+        /// </summary>
         public decimal amountRefunded { get; set; }
 
+        /// <summary>
+        /// Only available when refunds are available for this payment – The remaining amount in EURO that can be refunded. 
+        /// </summary>
         public decimal amountRemaining { get; set; }
 
         /// <summary>
@@ -111,5 +122,16 @@ namespace Mollie.Api.Models
         /// If the payment is a recurring payment, this field will hold the ID of the mandate used to authorize the recurring payment. 
         /// </summary>
         public string mandateId { get; set; }
+
+        /// <summary>
+        /// Only available for recurring payments – When implementing the Subscriptions API, any recurring charges resulting from the subscription will hold the ID of the subscription that triggered the payment. 
+        /// </summary>
+        public string subscriptionId { get; set; }
+
+        /// <summary>
+        /// Only available for failed Bancontact and credit card payments. – A textual desciption of the failure reason. 
+        /// </summary>
+        public string failureReason { get; set; }
+
     }
 }
