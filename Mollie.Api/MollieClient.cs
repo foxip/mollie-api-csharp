@@ -232,6 +232,9 @@ namespace Mollie.Api
             request.UserAgent = "Foxip Mollie Client v" + CLIENT_VERSION;
             request.Timeout = 10*1000; // 10 x 1000ms = 10s
 
+            // Force connection to TLS (no SSLv3) 
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
             if (postData != "")
             {
                 //Send the request and get the response
