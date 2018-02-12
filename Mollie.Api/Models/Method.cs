@@ -17,5 +17,6 @@ namespace Mollie.Api.Models
         paypal,
         paysafecard,
         giftcard,
+        inghomepay
     }
 }
