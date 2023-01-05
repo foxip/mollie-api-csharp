@@ -8,14 +8,14 @@ Mollie API client for C#
 Initializing the Mollie API client, and setting your API key.
 
 ```c#
-MollieClient mollieClient = new MollieClient("your_api_key_here");
+var mollieClient = new MollieClient("your_api_key_here");
 ```
 
 Loading iDeal issuers
 
 ```c#
-Issuers issuers = mollieClient.GetIssuers();
-foreach (Issuer issuer in issuers.data)
+var issuers = await mollieClient.GetIssuers();
+foreach (var issuer in issuers.data)
 {
    Console.WriteLine(issuer.name);
 }
@@ -24,22 +24,22 @@ foreach (Issuer issuer in issuers.data)
 Creating a new payment.
 
 ```c#
-Payment payment = new Payment 
+var payment = new Payment 
 { 
    amount = 99.99M, 
    description = "Test payment", 
    redirectUrl = "http://www.myshop.net/payments/completed/?orderId=1245",
    webhookUrl = "http://www.myshop.net/webhooks/mollie/",
 };
-PaymentStatus paymentStatus = mollieClient.StartPayment(payment);
-string molliePaymentId = paymentStatus.id;
+var paymentStatus = await mollieClient.StartPayment(payment);
+var molliePaymentId = paymentStatus.id;
 Response.Redirect(paymentStatus.links.paymentUrl);
 ```
 
 Getting payment status
 
 ```c#
-PaymentStatus paymentStatus = mollieClient.GetStatus(molliePaymentId);
+var paymentStatus = await mollieClient.GetStatus(molliePaymentId);
 if (paymentStatus.status == Status.paid)
 {
    Console.WriteLine("Your order is paid");
