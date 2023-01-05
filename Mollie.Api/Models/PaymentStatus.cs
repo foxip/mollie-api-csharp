@@ -1,6 +1,5 @@
 ﻿using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace Mollie.Api.Models
 {
@@ -24,7 +23,7 @@ namespace Mollie.Api.Models
         /// <summary>
         /// The current status of the payment.
         /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public Status? status { get; set; }
 
         /// <summary>
@@ -75,7 +74,7 @@ namespace Mollie.Api.Models
         /// <summary>
         /// The payment method that was ultimately used to complete this payment or null when no payment method was selected yet.
         /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public Method? method { get; set; }
 
         /// <summary>
@@ -116,6 +115,7 @@ namespace Mollie.Api.Models
         /// <summary>
         /// First or recurring payment
         /// </summary>
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public RecurringType recurringType { get; set; }
 
         /// <summary>

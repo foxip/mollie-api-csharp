@@ -1,0 +1,13 @@
+root = true
+
+# All files
+[*]
+indent_style = space
+
+# Other files
+
+[*.cs]
+indent_size = 4
+
+[*.json]
+indent_size = 2

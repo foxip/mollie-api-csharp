@@ -42,22 +42,6 @@ Getting payment status
 PaymentStatus paymentStatus = mollieClient.GetStatus(molliePaymentId);
 if (paymentStatus.status == Status.paid)
 {
-   Response.Write("Your order is paid");
-}
-```
-
-Refunds
-
-```c#
-RefundStatus refundStatus = mollieClient.Refund(molliePaymentId);
-```
-
-PaymentMethods
-
-```c#
-PaymentMethods methods = mollieClient.GetPaymentMethods();
-foreach (PaymentMethod method in methods.data)
-{
-	Console.WriteLine(method.image.normal);
+   Console.WriteLine("Your order is paid");
 }
 ```

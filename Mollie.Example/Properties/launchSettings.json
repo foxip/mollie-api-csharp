@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Mollie.Example": {
+      "commandName": "Project",
+      "commandLineArgs": ""
+    }
+  }
+}

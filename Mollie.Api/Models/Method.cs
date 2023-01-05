@@ -5,18 +5,23 @@ namespace Mollie.Api.Models
     /// </summary>
     public enum Method
     {
-        ideal,
-        creditcard,
-        mistercash,
-        sofort,
         banktransfer,
-        directdebit,
         belfius,
+        creditcard,
+        directdebit,
+        eps,
+        giftcard,
+        giropay,
+        ideal,
         kbc,
-        bitcoin,
+        mistercash,
+        mybank,
         paypal,
         paysafecard,
-        giftcard,
-        inghomepay
+        przelewy24,
+        sofort
     }
 }
+
+
+

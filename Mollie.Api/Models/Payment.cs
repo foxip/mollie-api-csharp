@@ -1,12 +1,9 @@
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
 namespace Mollie.Api.Models
 {
     public class Payment
     {
         /// <summary>
-        /// (Required) The exact amount you want to charge your buyer in Euro's. If you want to charge € 99,95 provide 99.95 as the value.
+        /// (Required) The exact amount you want to charge your buyer in Euro's. If you want to charge ï¿½ 99,95 provide 99.95 as the value.
         /// </summary>
         public decimal amount { get; set; }
 		
@@ -23,7 +20,6 @@ namespace Mollie.Api.Models
         /// <summary>
         /// (Optional) Use this parameter to directly select a payment method to use. Your buyer will then skip the payment method selection screen and will be sent directly to the payment method.
         /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
         public Method? method { get; set; }
 
         /// <summary>
@@ -77,7 +73,6 @@ namespace Mollie.Api.Models
         /// <summary>
         /// (Optional) Enables recurring payments. If set to first, a first payment for the customer is created, allowing the customer to agree to automatic recurring charges taking place on their account in the future. If set to recurring, the customer's card is charged automatically. 
         /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
         public RecurringType? recurringType { get; set; }
 
         /// <summary>
