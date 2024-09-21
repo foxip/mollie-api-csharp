@@ -1,7 +1,7 @@
 mollie-api-csharp
 =================
 
-Mollie API client for C#
+Mollie API v1 client for C#
 
 ## How to use the API client ##
 
