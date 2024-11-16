@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mollie.Api.Models
+namespace Mollie.Api.Models.Payment
 {
     public class PaymentDetails
     {
@@ -14,8 +14,7 @@ namespace Mollie.Api.Models
         public string cardFingerprint { get; set; }
         public string cardAudience { get; set; }
         public string cardLabel { get; set; }
-        public string cardCountry  { get; set; }
-        public string cardCountryCode  { get; set; }
+        public string cardCountryCode { get; set; }
         public DateTime? cardExpiryDate { get; set; }
         public string feeRegion { get; set; }
 
@@ -27,8 +26,6 @@ namespace Mollie.Api.Models
         public string transferReference { get; set; }
 
         public string bitcoinAddress { get; set; }
-        public string bitcoinAmount { get; set; }
-        public string bitcoinRate { get; set; }
         public string bitcoinUri { get; set; }
 
         public string paypalReference { get; set; }
@@ -38,9 +35,9 @@ namespace Mollie.Api.Models
         public string signatureDate { get; set; }
 
         public string endToEndIdentifier { get; set; }
-        public string mandateReference  { get; set; }
-        public string batchReference  { get; set; }
-        public string fileReference  { get; set; }
+        public string mandateReference { get; set; }
+        public string batchReference { get; set; }
+        public string fileReference { get; set; }
 
     }
 }

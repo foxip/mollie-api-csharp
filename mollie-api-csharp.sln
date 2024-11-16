@@ -5,7 +5,7 @@ VisualStudioVersion = 17.4.33122.133
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mollie.Api", "Mollie.Api\Mollie.Api.csproj", "{829DD5D7-57CE-4E5D-A36C-13CB6EEFD5BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mollie.Example", "Mollie.Example\Mollie.Example.csproj", "{FEC9A99E-66BE-4848-B116-72F8409939E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mollie.Example", "Mollie.Example\Mollie.Example.csproj", "{FEC9A99E-66BE-4848-B116-72F8409939E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

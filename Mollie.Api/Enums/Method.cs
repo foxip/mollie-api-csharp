@@ -1,25 +1,35 @@
-namespace Mollie.Api.Models
+using System.Text.Json.Serialization;
+
+namespace Mollie.Api.Enums
 {
     /// <summary>
     /// Payment method
     /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum Method
     {
+        alma,
+        applepay,
+        bacs,
+        bancomatpay,
+        bancontact,
         banktransfer,
         belfius,
+        blik,
         creditcard,
         directdebit,
         eps,
         giftcard,
-        giropay,
         ideal,
         kbc,
-        mistercash,
         mybank,
         paypal,
         paysafecard,
+        pointofsale,
         przelewy24,
-        sofort
+        satispay,
+        trustly,
+        twint
     }
 }
 

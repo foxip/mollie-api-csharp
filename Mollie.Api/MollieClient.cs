@@ -29,9 +29,15 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Mollie.Api.Models;
+using Mollie.Api.Enums;
+using Mollie.Api.Models.Customer;
+using Mollie.Api.Models.Mandate;
+using Mollie.Api.Models.Payment;
+using Mollie.Api.Models.PaymentMethod;
+using Mollie.Api.Models.Refund;
 
 namespace Mollie.Api
 {
@@ -41,7 +47,7 @@ namespace Mollie.Api
         const string API_ENDPOINT = "https://api.mollie.nl";
 
         // Version of the remote API.
-        const string API_VERSION = "v1";
+        const string API_VERSION = "v2";
 
         private readonly string _apiKey;
 
@@ -57,10 +63,12 @@ namespace Mollie.Api
             {
                 throw new ArgumentException($"Invalid API key: {apiKey}. An API key must start with 'test_' or 'live_'.");
             }
-            
+
             _options = new JsonSerializerOptions
             {
-                NumberHandling = System.Text.Json.Serialization.JsonNumberHandling.AllowReadingFromString
+                NumberHandling = JsonNumberHandling.AllowReadingFromString,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+
             };
 
             _httpClient = new HttpClient();
@@ -68,82 +76,40 @@ namespace Mollie.Api
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
         }
 
-        #region Issuers API
-        /// <summary>
-        /// Retrieve an issuer object by specifying an issuer identifier.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<Issuer> GetIssuer(string id)
-        {
-            return await GetRequest<Issuer>($"issuers/{id}");
-        }
-
-        /// <summary>
-        /// To integrate the iDeal issuer selection step on your own web site.
-        /// </summary>
-        /// <returns></returns>
-        public async Task<Issuers> ListIssuers()
-        {
-            return await GetRequest<Issuers>("issuers");
-        }
-        #endregion
-
         #region Payments API
-
-        /// <summary>
-        /// Create a payment
-        /// </summary>
-        public async Task<PaymentStatus> CreatePayment(Payment payment)
+        public async Task<PaymentStatus> CreatePayment(CreatePayment payment)
         {
-            return await SendRequest<PaymentStatus, Payment>(HttpMethod.Post, "payments", payment);
+            return await SendRequest<PaymentStatus, CreatePayment>(HttpMethod.Post, "payments", payment)  ;
         }
-
-        /// <summary>
-        /// Get status of a payment
-        /// </summary>
-        /// <param name="id">The id of the payment</param>
         public async Task<PaymentStatus> GetPayment(string id)
         {
             return await GetRequest<PaymentStatus>($"payments/{id}");
         }
-
-        /// <summary>
-        /// Get list of a payments
-        /// </summary>
-        public async Task<Payments> GetPayments()
+        public async Task<PaymentStatusesEmbedded> ListPayments()
         {
-            return await GetRequest<Payments>("payments");
+            return await GetRequest<PaymentStatusesEmbedded>("payments");
         }
+        #endregion
 
-        /// <summary>
-        /// To refund a payment, you must have sufficient balance with Mollie for deducting the refund and its fees. You can find your current balance on the on the Mollie controlpanel.
-        /// At the moment you can only process refunds for iDEAL, Bancontact/Mister Cash, SOFORT Banking, creditcard and bank transfer payments.
-        /// </summary>
-        /// <param name="id">The id of the payment</param>
+        #region Refunds API
         public async Task<RefundStatus> CreateRefund(string id, Refund refund)
         {
             return await SendRequest<RefundStatus, Refund>(HttpMethod.Post, $"payments/{id}/refunds", refund);
         }
-
-        /// <summary>
-        /// Retrieve all refunds for the given payment.
-        /// </summary>
-        /// <param name="id">The id of the payment</param>
-        /// <returns></returns>
-        public async Task<Refunds> ListRefunds(string id)
+        public async Task<RefundsEmbedded> ListRefunds(string id)
         {
-            return await GetRequest<Refunds>($"payments/{id}/refunds");
+            return await GetRequest<RefundsEmbedded>($"payments/{id}/refunds");
         }
-
         #endregion
 
         #region Methods API
-        /// <summary>
-        /// Fetch all payment methods for your profile
-        /// </summary>
-        public async Task<PaymentMethods> GetPaymentMethods()
+        public async Task<PaymentMethod> GetPaymentMethod(Method method)
         {
-            return await GetRequest<PaymentMethods>("methods");
+            return await GetRequest<PaymentMethod>($"methods/{method}?include=issuers");
+        }
+        public async Task<PaymentMethodsEmbedded> ListPaymentMethods()
+        {
+            return await GetRequest<PaymentMethodsEmbedded>("methods");
         }
         #endregion
 
@@ -152,24 +118,23 @@ namespace Mollie.Api
         {
             return await SendRequest<GetCustomer, CreateCustomer>(HttpMethod.Post, "customers", customer);
         }
-
         public async Task<GetCustomer> GetCustomer(string id)
         {
             return await GetRequest<GetCustomer>($"customers/{id}");
         }
-        public async Task<Customers> ListCustomers()
+        public async Task<CustomersEmbedded> ListCustomers()
         {
-            return await GetRequest<Customers>("customers");
+            return await GetRequest<CustomersEmbedded>("customers");
         }
         #endregion
 
         #region Mandates API
-        public async Task<Mandates> ListMandates(string customerId)
+        public async Task<MandatesEmbedded> ListMandates(string customerId)
         {
-            return await GetRequest<Mandates>($"customers/{customerId}/mandates");
+            return await GetRequest<MandatesEmbedded>($"customers/{customerId}/mandates");
         }
         #endregion
-                
+
         private async Task<T> SendRequest<T,D>(HttpMethod httpMethod, string resource, D data)
         {
             HttpResponseMessage response;

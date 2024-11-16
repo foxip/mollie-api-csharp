@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mollie.Api.Models
+namespace Mollie.Api.Models.Customer
 {
     public class GetCustomer
     {
-        public string resource { get; set; }
         public string id { get; set; }
         /// <summary>
         /// live or test
@@ -18,8 +17,9 @@ namespace Mollie.Api.Models
         public string email { get; set; }
         public string locale { get; set; }
         public string metadata { get; set; }
-        public string[] recentlyUsedMethods { get; set; }
-        public DateTime createdDatetime { get; set; }
+        public DateTime createdAt { get; set; }
+        public Links _links { get; set; } = new Links();
+
 
     }
 }
