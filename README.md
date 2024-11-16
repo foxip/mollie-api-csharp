@@ -1,7 +1,38 @@
 mollie-api-csharp
 =================
 
-Mollie API v1 client for C#
+This is partially implemented client for the Mollie API v2.
+
+If you need the full implementation, I would sugget to use:
+https://github.com/Viincenttt/MollieApi
+
+## Implemented methods
+
+### Payments API
+
+CreatePayment(Payment payment)
+GetPayment(string id)
+ListPayments()
+
+### Refunds API
+
+CreateRefund(string id, Refund refund)
+ListRefunds(string id)
+
+### Methods API
+
+GetPaymentMethod(string id)
+ListPaymentMethods()
+
+### Customers API
+
+CreateCustomer(CreateCustomer customer)
+GetCustomer(string id)
+ListCustomers()
+
+### Mandates API
+
+ListMandates(string customerId)
 
 ## How to use the API client ##
 
@@ -14,8 +45,8 @@ var mollieClient = new MollieClient("your_api_key_here");
 Loading iDeal issuers
 
 ```c#
-var issuers = await mollieClient.GetIssuers();
-foreach (var issuer in issuers.data)
+var paymentMethod = await mollieClient.GetPaymentMethod(Method.ideal);
+foreach (var issuer in paymentMethod.issuers)
 {
    Console.WriteLine(issuer.name);
 }
@@ -26,14 +57,15 @@ Creating a new payment.
 ```c#
 var payment = new Payment 
 { 
-   amount = 99.99M, 
+   amount = new Amount { currency = "EUR", value = "99.99" }, 
    description = "Test payment", 
+   
    redirectUrl = "http://www.myshop.net/payments/completed/?orderId=1245",
-   webhookUrl = "http://www.myshop.net/webhooks/mollie/",
+   webhookUrl = "http://www.myshop.net/webhooks/mollie/"
 };
-var paymentStatus = await mollieClient.StartPayment(payment);
+var paymentStatus = await mollieClient.CreatePayment(payment);
 var molliePaymentId = paymentStatus.id;
-Response.Redirect(paymentStatus.links.paymentUrl);
+Response.Redirect(paymentStatus._links.checkout.href);
 ```
 
 Getting payment status

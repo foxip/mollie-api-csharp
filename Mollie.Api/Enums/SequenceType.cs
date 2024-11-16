@@ -1,0 +1,12 @@
+using System.Text.Json.Serialization;
+
+namespace Mollie.Api.Enums
+{
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public enum SequenceType
+    {
+        oneoff,
+        first,
+        recurring
+    }
+}

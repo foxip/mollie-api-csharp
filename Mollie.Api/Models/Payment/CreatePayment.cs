@@ -1,12 +1,15 @@
-namespace Mollie.Api.Models
+using Mollie.Api.Enums;
+
+namespace Mollie.Api.Models.Payment
 {
-    public class Payment
+    public class CreatePayment
     {
+
         /// <summary>
         /// (Required) The exact amount you want to charge your buyer in Euro's. If you want to charge � 99,95 provide 99.95 as the value.
         /// </summary>
-        public decimal amount { get; set; }
-		
+        public Amount amount { get; set; }
+
         /// <summary>
         /// (Required) The description for this payment. This will be shown to your buyer in our payment screens and on their bank statement if the payment method supports that.
         /// </summary>
@@ -28,9 +31,14 @@ namespace Mollie.Api.Models
         public string metadata { get; set; }
 
         /// <summary>
-        /// (Optional) If you pass a valid URL as this parameter, we will use this URL as the web hook instead of the web hook that is set in the web site profile.
+        /// (Optional) The webhook URL where we will send payment status updates to. The webhookUrl is optional, but without a webhook you will miss out on important status changes to your payment.
         /// </summary>
         public string webhookUrl { get; set; }
+
+        /// <summary>
+        /// The URL your customer will be redirected to when the customer explicitly cancels the payment. If this URL is not provided, the customer will be redirected to the redirectUrl instead.
+        /// </summary>
+        public string cancelUrl { get; set; } = null;
 
         /// <summary>
         /// Allow you to preset the language to be used in the payment screens shown to the consumer. When this parameter is not provided, the browser language will be used instead (which is usually more accurate).
@@ -38,22 +46,12 @@ namespace Mollie.Api.Models
         /// </summary>
         public string locale { get; set; }
 
-        //(Optional) Creditcard and/or paypal parameters. Countries must be specified in ISO 3166-1 alpha-2 format.
-        public string billingAddress { get; set; }
-        public string billingCity { get; set; }
-        public string billingRegion { get; set; }
-        public string billingPostal { get; set; }
-        public string billingCountry { get; set; }
-        public string shippingAddress { get; set; }
-        public string shippingCity { get; set; }
-        public string shippingRegion { get; set; }
-        public string shippingPostal { get; set; }
-        public string shippingCountry { get; set; }
+        //(Optional) The customer's billing address details. We advise to provide these details to improve fraud protection and conversion. This is particularly relevant for card payments.
+        public Address billingAddress { get; set; }
 
-        /// <summary>
-        /// (Optional) Bank transfer parameter: Email address of the customer where he/she will receive the bank transfer details.
-        /// </summary>
-        public string billingEmail { get; set; }
+        //(Optional) The customer's shipping address details. We advise to provide these details to improve fraud protection and conversion. This is particularly relevant for card payments.
+        public Address shippingAddress { get; set; }
+
 
         /// <summary>
         /// (Optional) Date that the payment automatically expires. Format YYYY-MM-DD. For bank transfers.
@@ -71,29 +69,18 @@ namespace Mollie.Api.Models
         public string issuer { get; set; }
 
         /// <summary>
-        /// (Optional) Enables recurring payments. If set to first, a first payment for the customer is created, allowing the customer to agree to automatic recurring charges taking place on their account in the future. If set to recurring, the customer's card is charged automatically. 
+        /// (Optional) Enables recurring payments. If set to first, a first payment for the customer is created, allowing the customer to agree to automatic recurring charges taking place on their account in the future. If set to recurring, the customer's card is charged automatically.
         /// </summary>
-        public RecurringType? recurringType { get; set; }
+        public SequenceType? sequenceType { get; set; }
 
         /// <summary>
-        /// (Optional) The ID of the customer for whom the payment is being created. 
+        /// (Optional) The ID of the customer for whom the payment is being created.
         /// </summary>
         public string customerId { get; set; }
 
         /// <summary>
-        /// (Optional) When creating recurring payments, a specific mandate ID may be supplied to indicate which of the consumer's accounts should be credited. 
+        /// (Optional) When creating recurring payments, a specific mandate ID may be supplied to indicate which of the consumer's accounts should be credited.
         /// </summary>
         public string mandateId { get; set; }
-
-        /// <summary>
-        /// (Optional) Beneficiary name of the account holder. For SEPA direct debit. 
-        /// </summary>
-        public string consumerAccount { get; set; }
-
-        /// <summary>
-        /// (Optional) Beneficiary name of the account holder. For SEPA direct debit. 
-        /// </summary>
-        public string consumerName { get; set; }
-
     }
 }

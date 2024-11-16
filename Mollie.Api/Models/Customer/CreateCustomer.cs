@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mollie.Api.Models
+namespace Mollie.Api.Models.Customer
 {
     public class CreateCustomer
     {

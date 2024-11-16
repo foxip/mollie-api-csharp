@@ -1,8 +1,11 @@
-namespace Mollie.Api.Models
+using System.Text.Json.Serialization;
+
+namespace Mollie.Api.Enums
 {
     /// <summary>
     /// Payment status
     /// </summary>
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum Status
     {
         /// <summary>
@@ -11,9 +14,9 @@ namespace Mollie.Api.Models
         open,
 
         /// <summary>
-        /// Your customer has cancelled the payment.
+        /// Your customer has canceled the payment.
         /// </summary>
-        cancelled,
+        canceled,
 
         /// <summary>
         /// The payment has been started but not yet complete.
@@ -26,16 +29,6 @@ namespace Mollie.Api.Models
         paid,
 
         /// <summary>
-        /// The payment has been paid for and we have transferred the sum to your bank account.
-        /// </summary>
-        paidout,
-
-        /// <summary>
-        /// The payment has been refunded.
-        /// </summary>
-        refunded,
-
-        /// <summary>
         /// The payment has expired, for example, your customer has closed the payment screen.
         /// </summary>
         expired,
@@ -46,8 +39,9 @@ namespace Mollie.Api.Models
         failed,
 
         /// <summary>
-        /// The payment has been charged back after a complaint in case of creditcard, directdebit and paypal.
+        /// If the payment method supports captures, the payment method will have this status for as long as new captures can be created.
+        /// Currently this status is only possible for the payment methods Cards, Klarna Pay Now , Klarna Pay Later, Klarna Slice it, Billie, and Riverty.
         /// </summary>
-        charged_back,
+        authorized
     }
 }
