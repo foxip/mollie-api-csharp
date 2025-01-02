@@ -1,9 +1,9 @@
 mollie-api-csharp
 =================
 
-This is partially implemented client for the Mollie API v2.
+This is a partially implemented client for the Mollie API v2.
 
-If you need the full implementation, I would sugget to use:
+If you need the full implementation, I would suggest to use:
 https://github.com/Viincenttt/MollieApi
 
 ## Implemented methods
